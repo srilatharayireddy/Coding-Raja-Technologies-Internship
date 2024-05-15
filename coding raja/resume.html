@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resume Builder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      width: calc(100% - 20px);
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section h2 {
+      margin-bottom: 10px;
+    }
+
+    .photo-container {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    #resumePhoto {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-right: 20px;
+    }
+
+    .flex-container {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .flex-item {
+      width: calc(50% - 10px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Resume Builder</h1>
+    <div class="section">
+      <h2>Personal Information</h2>
+      <form id="personalForm">
+        <input type="text" id="fullName" name="fullName" placeholder="Full Name" required>
+        <input type="email" id="email" name="email" placeholder="Email" required>
+        <input type="tel" id="phone" name="phone" placeholder="Phone" required>
+        <input type="text" id="address" name="address" placeholder="Address" required>
+        <div class="photo-container">
+          <label for="photoInput">Passport Size Photo:</label>
+          <input type="file" id="photoInput" accept="image/*">
+          <img id="resumePhoto" alt="Passport Size Photo">
+        </div>
+      </form>
+    </div>
+    <div class="section">
+      <h2>Educational Information</h2>
+      <form id="educationForm">
+        <input type="text" id="degree" name="degree" placeholder="Degree" required>
+        <input type="text" id="university" name="university" placeholder="University" required>
+        <input type="text" id="year" name="year" placeholder="Year" required>
+      </form>
+    </div>
+    <div class="section">
+      <h2>Skills</h2>
+      <form id="skillsForm">
+        <textarea id="skills" name="skills" placeholder="Skills"></textarea>
+      </form>
+    </div>
+    <button type="button" onclick="generateResume()">Generate Resume</button>
+    <div id="generatedResume"></div>
+  </div>
+
+  <script>
+    function generateResume() {
+      const fullName = document.getElementById("fullName").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+      const address = document.getElementById("address").value;
+      const photo = document.getElementById("photoInput").files[0];
+      const degree = document.getElementById("degree").value;
+      const university = document.getElementById("university").value;
+      const year = document.getElementById("year").value;
+      const skills = document.getElementById("skills").value;
+      
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        const photoDataUrl = event.target.result;
+        
+        const resumeHTML = `
+          <div class="section">
+            <h2>Personal Information</h2>
+            <p>Full Name: ${fullName}</p>
+            <p>Email: ${email}</p>
+            <p>Phone: ${phone}</p>
+            <p>Address: ${address}</p>
+            <div class="photo-container">
+              <img src="${photoDataUrl}" alt="Passport Size Photo" id="resumePhoto">
+            </div>
+          </div>
+          <div class="section">
+            <h2>Educational Information</h2>
+            <p>Degree: ${degree}</p>
+            <p>University: ${university}</p>
+            <p>Year: ${year}</p>
+          </div>
+          <div class="section">
+            <h2>Skills</h2>
+            <p>${skills}</p>
+          </div>
+        `;
+        
+        document.getElementById("generatedResume").innerHTML = resumeHTML;
+      };
+      
+      if (photo) {
+        reader.readAsDataURL(photo);
+      }
+    }
+  </script>
+</body>
+</html>

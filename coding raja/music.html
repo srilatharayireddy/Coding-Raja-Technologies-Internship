@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        .music-library {
+            margin-bottom: 20px;
+        }
+
+        .music-library img {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+        }
+
+        audio {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .audio-controls button {
+            margin: 0 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .audio-controls button:hover {
+            background-color: #45a049;
+        }
+
+        .playlist {
+            margin-top: 20px;
+        }
+
+        .playlist input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            margin-right: 10px;
+        }
+
+        .playlist button {
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .playlist button:hover {
+            background-color: #0077A3;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 20px;
+            background-color: #ddd;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Music Player</h1>
+        <div class="music-library">
+            <img src="C:\Users\SRILATHA\OneDrive\Desktop\om bhim bush.jpg">
+            <img src="C:\Users\SRILATHA\OneDrive\Desktop\kushi.jpg">
+            <!-- Add more albums -->
+        </div>
+        <audio controls id="audio-player">
+            Your browser does not support the audio element.
+        </audio>
+        <div class="audio-controls">
+            <button id="prev">Previous</button>
+            <button id="play-pause">Play</button>
+            <button id="next">Next</button>
+            <button id="shuffle">Shuffle</button>
+            <button id="repeat">Repeat</button>
+            <input type="range" id="volume" min="0" max="100" value="100">
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <div class="playlist">
+            <input type="text" id="track-name" placeholder="Enter track name">
+            <button id="add-track">Add to Playlist</button>
+            <ul id="playlist-items"></ul>
+        </div>
+    </div>
+
+    <script>
+        const tracks = [
+            { title: "Track 1", src: "C:\Users\SRILATHA\OneDrive\Desktop\songs\[iSongs.info] 02 - Kadalalle.mp3" },
+            { title: "Track 2", src: "C:\Users\SRILATHA\OneDrive\Desktop\songs\[iSongs.info] 02 - Kadalalle.mp3" },
+            // Add more tracks as needed
+        ];
+
+        const audio = document.getElementById('audio-player');
+        const playPauseButton = document.getElementById('play-pause');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const shuffleButton = document.getElementById('shuffle');
+        const repeatButton = document.getElementById('repeat');
+        const volumeControl = document.getElementById('volume');
+        const progressBar = document.getElementById('progress-bar');
+        const playlistInput = document.getElementById('track-name');
+        const playlistButton = document.getElementById('add-track');
+        const playlistItems = document.getElementById('playlist-items');
+
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+
+        function playTrack(index) {
+            const track = tracks[index];
+            audio.src = track.src;
+            audio.play();
+            isPlaying = true;
+            playPauseButton.textContent = "Pause";
+        }
+
+        playPauseButton.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                isPlaying = false;
+                playPauseButton.textContent = "Play";
+            } else {
+                audio.play();
+                isPlaying = true;
+                playPauseButton.textContent = "Pause";
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            playTrack(currentTrackIndex);
+        });
+
+        prevButton.addEventListener('click', () => {
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            playTrack(currentTrackIndex);
+        });
+
+        shuffleButton.addEventListener('click', () => {
+        
+        });
+
+        repeatButton.addEventListener('click', () => {
+          
+        });
+
+        volumeControl.addEventListener('input', () => {
+            audio.volume = volumeControl.value / 100;
+        });
+
+        audio.addEventListener('timeupdate', () => {
+            const progress = (audio.currentTime / audio.duration) * 100;
+            progressBar.style.width = ${progress}%;
+        });
+
+        playlistButton.addEventListener('click', () => {
+            const trackName = playlistInput.value.trim();
+            if (trackName !== "") {
+                const li = document.createElement('li');
+                li.textContent = trackName;
+                playlistItems.appendChild(li);
+                playlistInput.value = "";
+            }
+        });
+        playTrack(currentTrackIndex);
+    </script>
+</body>
+</html>
